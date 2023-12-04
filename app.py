@@ -4,7 +4,7 @@ import bcrypt
 
 
 # Establishing connection to the MongoDB database
-uri = "mongodb+srv://tempuser:aryamaan@cluster0.10enjsp.mongodb.net/?retryWrites=true&w=majority"
+uri = "ADD YOUR MONGODB URI HERE"
 client = MongoClient(uri)
 db = client.get_database("TripSync")
 user_details = db.get_collection("UserDetails")

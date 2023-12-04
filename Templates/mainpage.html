@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Trip Sync - Home</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+    <link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css')}}" />
+    <style>
+        body{
+            line-height: 2 !important;
+        }
+        .logo-carousel {
+            display: flex;
+            justify-content: space-evenly;
+            align-items: center;
+            padding: 20px 0;
+            position: relative;
+        }
+
+        .logo-carousel i {
+            font-size: 30px;
+            transition: transform 0.3s ease-in-out, opacity 0.3s ease-in-out, z-index 0.3s ease-in-out;
+            cursor: pointer;
+            position: relative;
+            z-index: 1;
+            color: aliceblue;
+        }
+
+        .logo-links {
+            display: none;
+        }
+
+        .logo-links.active {
+            display: block;
+        }
+
+        .focused {
+            color: #ffc001 !important;
+            transform: scale(1.5); /* Increase size */
+            opacity: 1; /* Increase opacity */
+            z-index: 2; /* Bring to front */
+        }
+
+        .section-card, .card-custom {
+            height: 30%;
+        }
+
+        .custom-setting {
+            height: 100% !important;
+        }
+
+        .content-wrapper {
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+            justify-content: space-between;
+
+            font-family: 'Futura' !important;
+            font-weight: 700;
+            color: #ffc001;
+        }
+
+        .list-group{
+            align-items: center !important;
+        }
+
+        .list-group-item a{
+            color: aliceblue !important;
+            font-weight: 500 !important;
+            font-size: 1.5rem !important;
+        }
+
+        .list-group-item :hover{
+            color: #ffc001 !important;
+            text-decoration: none;
+        }
+
+        p{
+            color: aliceblue !important;
+            font-weight: 400 !important;
+            font-family: 'Futura' !important;
+        }
+
+        .bottomCopyRight {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 100%;
+            text-align: center;
+            padding: 10px 0;
+            font-size: 14px;
+        }
+    </style>
+</head>
+
+<body style="height: 100%; margin: 0px; overflow: hidden;" id="booking">
+
+    <div class="container-fluid" style="height: 100vh; display: flex; flex-direction: column; ">
+        <div class="row mt-5" style="flex: 1; flex-wrap: nowrap; margin: 30px;">
+            <!-- Logo Carousel - 30% width -->
+            <div class="col-md-3 customNav" style="overflow-y: auto; background-color: #101113 !important;">
+                <div class="logo-carousel mt-5 mb-5">
+                    <!-- Logo 1 -->
+                    <i class="fas fa-user" onclick="showLinks('logo1', 'logo2')" id="logo1"></i>
+                    <!-- Logo 2 -->
+                    <i class="fas fa-taxi" onclick="showLinks('logo2', 'logo1')" id="logo2"></i>
+                </div>
+                <!-- Links for Logos -->
+                <div class="logo-links" id="logo1Links" style="background-color: #101113 !important;">
+                    <ul class="list-group">
+                        <!-- Links for Logo 1 -->
+                        <li class="list-group-item" style="background-color: #101113 !important; border: 0 !important;"><a href="/signup">Register</a></li>
+                        <li class="list-group-item" style="background-color: #101113 !important; border: 0 !important;"><a href="/signin">Log In</a></li>
+                        <li class="list-group-item" style="background-color: #101113 !important; border: 0 !important;"><a href="/logout">Log Out</a></li>
+                    </ul>
+                </div>
+                <div class="logo-links" id="logo2Links" style="background-color: #101113 !important;">
+                    <ul class="list-group" style="background-color: #101113 !important;">
+                        <!-- Links for Logo 2 -->
+                        <li class="list-group-item" style="background-color: #101113 !important; border: 0 !important;"><a href="/mainpage">Home</a></li>
+                        <li class="list-group-item" style="background-color: #101113 !important; border: 0 !important;"><a href="/tripnew">Make A Trip</a></li>
+                        <li class="list-group-item" style="background-color: #101113 !important; border: 0 !important;"><a href="/home">Show Trips</a></li>
+                    </ul>
+                </div>
+                <div class="bottomCopyRight">
+                    <p>Made by Aryamaan Dholakia</p>
+                    <p>© 2023 Trip Sync. All rights reserved.</p>
+                </div>
+            </div>
+
+            <!-- Main Content - 70% width -->
+            <div class="col-md-9 d-flex flex-column" style="overflow-y: auto;">
+                <div class="content-wrapper">
+                    <div class="card section-card" style="background-color: #101113 !important;">
+                        <div class="card-body">
+                            <h1 class="card-title">Welcome to Trip Sync!</h1>
+                            <p class="card-text">Your go-to platform for seamless travel planning.</p>
+                        </div>
+                    </div>
+                    <div class="row card-custom">
+                        <div class="col-md-6 custom-setting">
+                            <div class="card section-card custom-setting" style="background-color: #101113 !important;">
+                                <div class="card-body">
+                                    <h2 class="card-title">Feature 1</h2>
+                                    <p class="card-text">Description of Feature 1</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-md-6 custom-setting">
+                            <div class="card section-card custom-setting" style="background-color: #101113 !important;">
+                                <div class="card-body">
+                                    <h2 class="card-title">Feature 2</h2>
+                                    <p class="card-text">Description of Feature 2</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="card section-card" style="background-color: #101113 !important;">
+                        <div class="card-body">
+                            <h2 class="card-title">Contact Us</h2>
+                            <p class="card-text">Email: contact@tripsync.com</p>
+                            <p class="card-text">Phone: +1234567890</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+    <script>
+        function showLinks(selectedLogoId, otherLogoId) {
+            // Hide all logo links
+            document.querySelectorAll('.logo-links').forEach(function (link) {
+                link.classList.remove('active');
+            });
+
+            // Show the selected logo's links
+            document.getElementById(selectedLogoId + 'Links').classList.add('active');
+
+            // Make the selected logo bigger and more focused
+            document.getElementById(selectedLogoId).classList.add('focused');
+
+            // Make the other logo smaller and less focused
+            document.getElementById(otherLogoId).classList.remove('focused');
+
+            // Scale the selected logo and decrease the other logo
+            if (selectedLogoId == 'logo1') {
+                document.getElementById(selectedLogoId).style.transform = 'translateX(50%) scale(1.5)'; /* Scale up */
+                document.getElementById(otherLogoId).style.transform = 'translateX(50%) scale(0.8)'; /* Scale down */
+            } else if (selectedLogoId == 'logo2') {
+                document.getElementById(selectedLogoId).style.transform = 'translateX(-50%) scale(1.5)'; /* Scale up */
+                document.getElementById(otherLogoId).style.transform = 'translateX(-50%) scale(0.8)'; /* Scale down */
+            }
+        }
+        window.onload = function () {
+            document.getElementById('logo2Links').classList.add('active');
+            document.getElementById('logo2').classList.add('focused');
+            document.getElementById('logo2').style.transform = 'translateX(-50%) scale(1.5)'; /* Scale up */
+            document.getElementById('logo1').style.transform = 'translateX(-50%) scale(0.8)'; /* Scale down */
+        };
+    </script>
+</body>
+
+</html>

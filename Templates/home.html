@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Trips</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        /* Additional styles if needed */
+        .trip-card {
+            border: 1px solid #ccc;
+            margin-bottom: 20px;
+            padding: 10px;
+            border-radius: 5px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-4">
+        <h1>Trips</h1>
+        <div class="row" id="trip-cards">
+            <!-- Trip cards will be dynamically added here -->
+        </div>
+    </div>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        // Function to handle joining a trip
+        function joinTrip(tripId) {
+            // Perform AJAX request to get the user ID
+            $.ajax({
+                type: 'GET',
+                url: '/getUserId',
+                success: function(response) {
+                    if (response && response.user_id) {
+                        var userId = response.user_id;
+
+                        // Perform AJAX request to join the trip using the obtained user ID
+                        $.ajax({
+                            type: 'POST',
+                            url: '/trip/add_user',
+                            data: { trip_id: tripId, user_id: userId },
+                            success: function(response) {
+                                // Handle success response (e.g., display a success message)
+                                console.log('Successfully joined trip:', response);
+                            },
+                            error: function(error) {
+                                // Handle error response (e.g., display an error message)
+                                console.error('Error joining trip:', error);
+                            }
+                        });
+                    } else {
+                        console.error('User ID not found in the response');
+                    }
+                },
+                error: function(error) {
+                    // Handle error response (e.g., display an error message)
+                    console.error('Error fetching user ID:', error);
+                }
+            });
+        }
+
+        // Fetch trips from the backend using AJAX and populate the trip cards
+        $(document).ready(function() {
+            $.ajax({
+                type: 'GET',
+                url: '/tripDetails',
+                success: function(response) {
+                    if (response && response.trips && response.trips.length > 0) {
+                        response.trips.forEach(function(trip) {
+                            var tripCard = `
+                                <div class="col-md-4">
+                                    <div class="trip-card">
+                                        <h4>Trip ID: ${trip.trip_id}</h4>
+                                        <p>Destination: ${trip.destination}</p>
+                                        <p>Number of people joined: ${trip.num_people_joined}</p>
+                                        <button onclick="joinTrip('${trip.trip_id}')">Join Trip</button>
+                                    </div>
+                                </div>
+                            `;
+                            $('#trip-cards').append(tripCard);
+                        });
+                    } else {
+                        $('#trip-cards').html('<p>No trips available</p>');
+                    }
+                },
+                error: function(error) {
+                    console.error('Error fetching trips:', error);
+                    $('#trip-cards').html('<p>Error fetching trips</p>');
+                }
+            });
+        });
+    </script>
+</body>
+</html>

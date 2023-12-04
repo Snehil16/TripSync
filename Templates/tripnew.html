@@ -1,0 +1,160 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+
+	<title>Make A Trip</title>
+
+	<!-- Google font -->
+	<link href="https://fonts.googleapis.com/css?family=Montserrat:400,700" rel="stylesheet">
+
+	<!-- Bootstrap -->
+	<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='bootstrap.min.css')}}" />
+
+	<!-- Custom stlylesheet -->
+	<link type="text/css" rel="stylesheet" href="{{ url_for('static', filename='style.css')}}" />
+
+	<style>
+		button{
+			color: #101113;
+			background-color: #ffc001;
+			font-weight: 700;
+			height: 50px;
+			border: none;
+			width: 100%;
+			display: block;
+			border-radius: 3px;
+    		text-transform: uppercase;
+		}
+	</style>
+
+</head>
+
+<body>
+	<div id="booking" class="section">
+		<div class="section-center">
+			<div class="container">
+				<div class="row">
+					<div class="booking-form">
+						<div class="form-header">
+							<h1>Make A Trip</h1>
+						</div>
+						<form action="/trip" method="POST">
+							<div class="row">
+								<div class="col-sm-6">
+									<div class="form-group">
+										<span class="form-label">Name</span>
+										<input class="form-control" type="text" placeholder="Enter your name" name="name" id="name">
+									</div>
+								</div>
+								<div class="col-sm-6">
+									<div class="form-group">
+										<span class="form-label">Email</span>
+										<input class="form-control" type="email" placeholder="Enter your email" name="email" id="email">
+									</div>
+								</div>
+							</div>
+							<div class="form-group">
+								<span class="form-label">Phone</span>
+								<input class="form-control" type="tel" placeholder="Enter your phone number" name="phone" id="phone">
+							</div>
+							<div class="form-group">
+								<span class="form-label">Pickup Location</span>
+								<input class="form-control" type="text" placeholder="Enter ZIP/Location" name="pickup_location" id="pickup_location">
+							</div>
+							<div class="form-group">
+								<span class="form-label">Destination</span>
+								<input class="form-control" type="text" placeholder="Enter ZIP/Location" name="destination" id="destination">
+							</div>
+							<div class="row">
+								<div class="col-sm-5">
+									<div class="form-group">
+										<span class="form-label">Pickup Date</span>
+										<input class="form-control" type="date" required name="pickup_date" id="pickup_date">
+									</div>
+								</div>
+								<div class="col-sm-7">
+									<div class="row">
+										<div class="col-sm-6">
+											<div class="form-group">
+												<span class="form-label">Number of People</span>
+												<select class="form-control" name="num_people" id="num_people">
+													<option>1</option>
+													<option>2</option>
+													<option>3</option>
+													<option>4</option>
+													<option>5</option>
+													<option>6</option>
+													<option>7</option>
+													<option>8</option>
+												</select>
+												<span class="select-arrow"></span>
+											</div>
+										</div>
+
+										<div class="col-sm-6">
+											<div class="form-group">
+												<span class="form-label">Amount</span>
+												<input class="form-control" type="text" placeholder="Enter Amount" name="amount" id="amount">
+												<span class="select-arrow"></span>
+											</div>
+										</div>
+									</div>
+								</div>
+							</div>
+							<div class="form-btn">
+								<button type="submit">Make Trip</button>
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            $('.submit-btn').click(function (event) {
+                event.preventDefault(); // Prevent default form submission
+
+                // Retrieve form data
+                var formData = {
+                    name: $('#name').val(),
+                    email: $('#email').val(),
+                    phone: $('#phone').val(),
+                    pickup_location: $('#pickup_location').val(),
+                    destination: $('#destination').val(),
+                    pickup_date: $('#pickup_date').val(),
+                    num_people: $('#num_people').val(),
+                    amount: $('#amount').val()
+                };
+
+                // Send AJAX POST request to the server
+                $.ajax({
+                    type: 'POST',
+                    url: '/trip', // Replace with your endpoint
+                    data: JSON.stringify(formData), // Convert data to JSON string
+                    contentType: 'application/json',
+                    success: function (response) {
+						window.location.href = "/home";
+                        // Handle success response
+                        console.log('Trip created:', response);
+                        // Perform actions after successful trip creation, if needed
+                    },
+                    error: function (error) {
+                        // Handle error response
+                        console.error('Error creating trip:', error);
+                        // Perform actions on error, if needed
+                    }
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
+
+

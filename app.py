@@ -4,7 +4,7 @@ import bcrypt
 
 
 # Establishing connection to the MongoDB database
-uri = "mongodb+srv://tempuser:aryamaan@cluster0.10enjsp.mongodb.net/?retryWrites=true&w=majority"
+uri = ""
 client = MongoClient(uri)
 db = client.get_database("TripSync")
 user_details = db.get_collection("UserDetails")
@@ -16,15 +16,12 @@ app.config['SECRET_KEY'] = 'aryamaan'  # For testing purposes only
 
 
 ## HTML
-@app.route('/')
-@app.route('/home')
-def home():
-    return render_template('home.html')
-
 # Route to display mainpage
+@app.route('/')
 @app.route('/mainpage')
 def mainpage():
     return render_template('mainpage.html')
+
 
 # Route to display the signup form
 @app.route('/signup', methods=['GET'])
@@ -67,17 +64,18 @@ def signin():
     if signin:
         if bcrypt.hashpw(request.form['password'].encode('utf-8'), signin_user['password'].encode('utf-8')) == \
                     signin_user['password'].encode('utf-8'):
+            # create session for the active user
             session['email'] = request.form['email']
-            return redirect('/home')
+            return redirect('/mainpage')
     flash('Invalid email/password')
     return redirect('/signin')
 
 @app.route('/logout')
 def logout():
     session.pop('email', None)
-    return redirect('/home')
+    return redirect('/mainpage')
 
-# Route to display the home page
+# Route to display all the trips
 @app.route('/home', methods=['GET'])
 def show_home_page():
     return render_template('home.html')
@@ -90,7 +88,6 @@ def show_create_trip_form():
 # POST API to create a trip
 @app.route('/trip', methods=['POST'])
 def create_trip():
-    print(request.form)
     # Extracting trip details from the POST request
     name = request.form['name']  # Extract name from form
     email = request.form['email']  # Extract email from form
@@ -145,7 +142,7 @@ def create_trip():
 
 
 # home page displays all the trips
-@app.route('/tripDetails')
+@app.route('/tripDetails', methods=['GET'])
 def show_trip_details():
     formatted_trips = []
 
@@ -204,11 +201,11 @@ def add_user_to_trip():
                 {'$set': {'user_ids': str(user_ids), 'count': count}}
             )
 
-            # Increment the count of people joined in the Trips collection
-            trips.update_one(
-                {'_id': str(trip_id)},
-                {'$inc': {'num_people_joined': 1}}
-            )
+            # # Increment the count of people joined in the Trips collection
+            # trips.update_one(
+            #     {'_id': str(trip_id)},
+            #     {'$inc': {'num_people_joined': 1}}
+            # )
 
             return jsonify({'result': 'success'})
         else:
